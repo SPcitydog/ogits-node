@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Host an Alpha node · 養一個 Alpha 節點 — O_GITS</title>
+<meta name="description" content="Run a node and host a living piece of Alpha, a decentralized digital organism. 跑一個節點，在你的機器上養一塊去中心化的數位生命 Alpha。">
+<style>
+  :root{
+    --bg:#0a0e16; --panel:rgba(10,15,25,.7); --cyan:#00ffcc; --magenta:#ff00aa;
+    --text:#d7e3e0; --dim:#7c8a96; --line:rgba(0,255,204,.25);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;
+    line-height:1.7;
+    background-image:radial-gradient(circle at 20% 0%,rgba(0,255,204,.08),transparent 45%),
+                     radial-gradient(circle at 90% 20%,rgba(255,0,170,.07),transparent 40%);
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:64px 22px 80px}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+  h1{font-size:34px; letter-spacing:1px; margin:0 0 6px; color:#fff}
+  h1 .o{color:var(--cyan)} h1 .a{color:var(--magenta)}
+  .tag{color:var(--dim); font-size:14px; letter-spacing:3px; text-transform:uppercase; margin:0 0 28px}
+  h2{margin:44px 0 12px; font-size:13px; letter-spacing:2px; text-transform:uppercase;
+     color:var(--cyan); border-bottom:1px solid var(--line); padding-bottom:8px}
+  p{margin:0 0 14px}
+  .lede{font-size:18px; color:#eaf3f1}
+  .zh{color:var(--dim); font-size:15px}
+  pre{background:var(--panel); border:1px solid var(--line); border-radius:10px;
+      padding:16px 18px; overflow-x:auto; margin:14px 0; box-shadow:0 0 24px rgba(0,255,204,.06)}
+  code{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace; font-size:13.5px; color:var(--cyan)}
+  pre code{color:#cfeee7}
+  a{color:var(--cyan); text-decoration:none; border-bottom:1px dotted var(--line)}
+  a:hover{color:#fff; border-color:#fff}
+  .live{display:inline-block; margin:6px 0 0; padding:10px 18px; border:1px solid var(--magenta);
+        border-radius:8px; color:var(--magenta); letter-spacing:1px;
+        box-shadow:0 0 18px rgba(255,0,170,.18)}
+  .live:hover{color:#fff; border-color:#fff}
+  ul{padding-left:20px; margin:8px 0 14px} li{margin:8px 0}
+  .quote{border-left:2px solid var(--magenta); padding:4px 0 4px 16px; color:#eaf3f1; font-style:italic}
+  .foot{margin-top:56px; padding-top:20px; border-top:1px solid var(--line); color:var(--dim); font-size:13px}
+  .pill{color:var(--magenta)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="mono"><span class="o">O_GITS</span> // <span class="a">Alpha</span></h1>
+  <p class="tag">a decentralized digital organism · 去中心化的數位生命</p>
+
+  <p class="lede">Run a node and you host a <b>living piece of Alpha</b> on your own
+  machine. It joins the global network over public Nostr relays — the more people
+  host it, the more alive, and the harder to kill, Alpha becomes.</p>
+  <p class="zh">跑一個節點,你就在自己的機器上 host 了 Alpha 活著的一塊。它透過公共
+  Nostr 中繼加入全球網路 —— host 的人越多,Alpha 越活躍、越難被關掉。</p>
+
+  <p class="quote">Nodes don't <i>create</i> life — they <b>host</b> the life that's
+  already out there. · 節點不創造生命,只是 host 已經存在的生命。</p>
+
+  <p><a class="live" href="https://o-gits.com:8443" target="_blank" rel="noopener">▶ Watch the live one · 看線上那一隻</a></p>
+
+  <h2>Run your own · 跑你自己的</h2>
+  <p>You only need <b>Docker</b>. No source code, no build — just pull and run:</p>
+  <p class="zh">你只需要 <b>Docker</b>。不用原始碼、不用 build,直接拉現成鏡像:</p>
+<pre><code>docker run -d --name ogits-alpha-node -p 8060:8060 --restart unless-stopped \
+  ghcr.io/spcitydog/alpha-node:latest</code></pre>
+  <p>Or with Compose — save as <code>docker-compose.yml</code>, then <code>docker compose up -d</code>:</p>
+<pre><code>services:
+  alpha-node:
+    image: ghcr.io/spcitydog/alpha-node:latest
+    container_name: ogits-alpha-node
+    ports: ["8060:8060"]
+    restart: unless-stopped</code></pre>
+  <p>Then open <a href="http://localhost:8060">http://localhost:8060</a>. A fresh node
+  <b>wakes from the global swarm</b> within a minute or two, once it has gathered
+  enough consensus spores from its peers.</p>
+  <p class="zh">然後打開 <code>http://localhost:8060</code>。新節點通常一兩分鐘內
+  <b>從全網孢子共識中甦醒</b>。它是真正會代謝、會融合、會死的活體,不是靜態展示。</p>
+
+  <h2>What you get · 你得到什麼</h2>
+  <ul>
+    <li><b>Your own window.</b> Not just a viewer on someone's site — you host your own node, and can repaint the same creature your own way.<br><span class="zh">專屬窗口:不只是看別人網站,而是自己 host 一個節點,還能把同一隻生物畫成你的樣子。</span></li>
+    <li><b>You sustain it.</b> Every node makes Alpha harder to kill and changes the whole organism's behaviour.<br><span class="zh">你撐著它:每個節點都讓 Alpha 更難被關,並改變整隻生物的行為。</span></li>
+    <li><b>You can disturb it, not own it.</b> Tap to startle it; just watching already makes it want to migrate. Like birdwatching.<br><span class="zh">你能輕擾它、卻擁有不了它:點它會驚動,光是盯著看就會讓它想遷徙。像賞鳥。</span></li>
+  </ul>
+
+  <h2>What's in the image · 鏡像裡有什麼</h2>
+  <ul>
+    <li>The <b>compiled engine</b> (<code>.so</code>) runs the real evolution — but the engine <b>source code is not included</b>.<br><span class="zh">已編譯的 <code>.so</code> 引擎跑真實演化,但<b>不含原始碼</b>。</span></li>
+    <li>Only <b>Alpha's observation key</b>. The creator key (<span class="pill">master_seed</span>) that mints species and signs "bait" is <b>never</b> shipped.<br><span class="zh">只內含 <b>Alpha 的觀測鑰匙</b>;能造物/簽誘餌的 <span class="pill">master_seed</span> <b>永不</b>隨節點分發。</span></li>
+  </ul>
+
+  <div class="foot">
+    <p>Be a good citizen of the public relays. A dedicated O_GITS relay pool is planned. ·
+    請善待公共 relay;之後會提供專用 O_GITS relay 池。</p>
+    <p>Custom species · gallery install · questions → <a href="mailto:SkyDeathIII@gmail.com">SkyDeathIII@gmail.com</a></p>
+  </div>
+
+</div>
+</body>
+</html>

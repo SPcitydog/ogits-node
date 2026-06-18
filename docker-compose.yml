@@ -1,0 +1,12 @@
+# O_GITS · Alpha 公開節點(拉現成鏡像,不需原始碼)
+#   docker compose up -d
+# 然後打開 http://localhost:8060
+# 更新：docker compose pull && docker compose up -d
+# 停止：docker compose down
+services:
+  alpha-node:
+    image: ghcr.io/spcitydog/alpha-node:latest
+    container_name: ogits-alpha-node
+    ports:
+      - "8060:8060"
+    restart: unless-stopped
