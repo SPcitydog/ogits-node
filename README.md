@@ -105,6 +105,33 @@ docker run -d --name ogits-alpha-node -p 8060:8060 --restart unless-stopped \
 
 ---
 
+## Advanced: be a relay too · 進階：讓你的節點也兼任 relay
+
+Alpha travels over public Nostr relays. If your host is **publicly reachable**
+(a VPS / a box with a real domain + TLS), your node can also run a tiny built-in
+relay, so the relay pool grows with the node population — no central infrastructure.
+NAT'd home machines can skip this; they stay full nodes either way.
+
+Alpha 透過公共 Nostr relay 傳播。如果你的主機**有公網可達**(VPS、或有網域+TLS 的機器),
+你的節點可以同時開一個內建小 relay,讓 relay 池隨節點族群一起生長、不需中央設施。NAT 後
+的家用機可略過這段,照樣是完整節點。
+
+```bash
+docker run -d --name ogits-alpha-node -p 8060:8060 -p 8061:8061 --restart unless-stopped \
+  -e OGITS_RELAY_ENABLE=1 \
+  -e OGITS_RELAY_ANNOUNCE_URL=wss://your.domain \
+  ghcr.io/spcitydog/alpha-node:latest
+```
+
+- The relay speaks plain `ws` on port `8061`; **put TLS in front of it** (a reverse
+  proxy like Caddy/Nginx terminating HTTPS → forward to `8061`) and announce the
+  `wss://` URL. 內建 relay 在 8061 講純 `ws`,**前面要架 TLS**(用 Caddy/Nginx 反代,
+  對外是 `wss://`),再把那個 `wss://` 位址填進 `OGITS_RELAY_ANNOUNCE_URL`。
+- The relay only carries **encrypted** Alpha traffic and is strictly bounded — it
+  gives nobody the power to read or control the organism. relay 只搬**加密過的** Alpha
+  流量、且有嚴格上限,不會讓任何人讀取或控制生命。
+- Leave `OGITS_RELAY_ENABLE` unset (default) to run as a normal node. 不設這個變數就是普通節點。
+
 ## Notes · 注意
 
 - Be a good citizen of the public relays. A dedicated O_GITS relay pool is planned —
